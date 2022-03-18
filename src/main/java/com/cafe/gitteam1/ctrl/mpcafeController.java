@@ -42,6 +42,7 @@ public class mpcafeController {
 	boolean b = false;
 	public static String uploadPath="/home/hosting_users/gitteam1/tomcat/webapps/upload/";
 	
+	//카페관리 홈으로 이동시
 	@RequestMapping(value="/cafemanage", method= {RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView cafemanage(String findStr, HttpSession session) {
 		ModelAndView mv = new ModelAndView();
@@ -54,6 +55,7 @@ public class mpcafeController {
 	}return mv;
 	}		
 	
+	//개별 카페관리 페이지로 이동시
 	@RequestMapping(value="/cafeupdate", method=RequestMethod.GET)
 	public ModelAndView cafeupdate(@RequestParam String cafe_id) throws Exception{
 		vo = service.view(cafe_id);
@@ -63,7 +65,20 @@ public class mpcafeController {
 		mv.setViewName("mypage_cafe/cafeupdate");
 		return mv;
 	}
+		
+	//영업일관리 페이지로 이동시
+	@RequestMapping(value="/dayOff", method= RequestMethod.GET)
+	public ModelAndView dayOff(@RequestParam String cafe_id) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		mpcafeVo vo = new mpcafeVo();
+		vo = service.dayoffSelect(cafe_id);
+		mv.addObject("vo", vo);	
+		
+		mv.setViewName("mypage_cafe/dayOff");			
+		return mv;
+	}
 	
+	//카페정보를 업데이트하고 저장할 때
 	@RequestMapping("cafeupdateSave")
 	public ModelAndView cafeupdateSave(String cafe_id, HttpServletResponse resp,
 			@RequestParam("search_name") List<String> mul,
@@ -96,30 +111,8 @@ public class mpcafeController {
 			mv.setViewName("mypage_cafe/mpcafe_result");
 			return mv;
 	}
-		
 	
-	@RequestMapping(value="/dayOff", method= RequestMethod.GET)
-	public ModelAndView dayOff(@RequestParam String cafe_id) throws Exception{
-		ModelAndView mv = new ModelAndView();
-		mpcafeVo vo = new mpcafeVo();
-		vo = service.dayoffSelect(cafe_id);
-		mv.addObject("vo", vo);	
-		
-		mv.setViewName("mypage_cafe/dayOff");			
-		return mv;
-	}
-	
-	@RequestMapping(value = "/deleteOff", method = RequestMethod.GET)
-	public ModelAndView deleteOff(@RequestParam(value="off_id") String off_id, @RequestParam(value="cafe_id") String cafe_id) throws Exception {
-		b = service.deleteOff(off_id);
-		ModelAndView mv = new ModelAndView();
-		mpcafeVo vo = new mpcafeVo();
-		vo = service.dayoffSelect(cafe_id);
-		mv.addObject("vo", vo); //다시 vo값을 넣어서 리다이렉트
-		mv.setViewName("mypage_cafe/dayOff");
-		return mv;
-	}
-	
+	//메뉴삭제시
 	@RequestMapping(value = "/deleteMenu", method = RequestMethod.GET)
 	public ModelAndView deletMenu(@RequestParam(value="menu_id") String menu_id, @RequestParam(value="cafe_id") String cafe_id) throws Exception {
 		b = service.deleteMenu(menu_id);
@@ -131,31 +124,7 @@ public class mpcafeController {
 		return mv;
 	}
 	
-	
-	@RequestMapping(value="dayOffSave", method= RequestMethod.POST)
-	public ModelAndView dayOffSave(String start_time, String end_time, dayoffVo dvo, HttpServletResponse resp) {
-		ModelAndView mv = new ModelAndView();
-		
-		if(dvo.getStart_time().equals("") && dvo.getEnd_time().equals("")) {			
-			dvo.setOff_type("휴무");		
-			b = service.insertOffday(dvo);
-		}else {
-			dvo.setOff_type("일시정지");		
-			b = service.insertOff(dvo);
-		}
-		String msg = "";
-		if(b) {
-			msg="영업일 관리가 성공적으로 완료되었습니다.";
-		}else {
-			msg="영업일 관리중 오류가 발생했습니다. 다시 시도해주세요";
-		}
-		mv.addObject("vo", vo);
-		mv.addObject("msg", msg);
-		mv.setViewName("mypage_cafe/dayoff_result");
-		return mv;
-
-	}
-	
+	//메뉴 저장시
 	@RequestMapping(value="menuSave", method=RequestMethod.POST)
 	public ModelAndView drinkSave(String cafe_id, mpcafe_listVo lvo, HttpServletResponse resp) {
 		b = service.insertMenu(lvo);
@@ -168,6 +137,7 @@ public class mpcafeController {
 
 	}
 	
+	//새 카페사진 추가시
 	@RequestMapping("fileSave")
 	public ModelAndView upload(String cafe_id,
 			@RequestParam("photo_name") List<MultipartFile> mul,
@@ -202,6 +172,7 @@ public class mpcafeController {
 		return mv;
 	}
 	
+	//카페사진 삭제시
 	@RequestMapping(value = "/deleteOtherphoto", method = RequestMethod.GET)
 	public ModelAndView deletOtherphoto(@RequestParam(value="photo_name") String photo_name, @RequestParam(value="cafe_id") String cafe_id) throws Exception {
 		b = service.deleteOtherphoto(photo_name);
@@ -213,6 +184,7 @@ public class mpcafeController {
 		return mv;
 	}
 	
+	//타이틀 사진 수정
 	@RequestMapping(value="titlemodify", method= RequestMethod.POST)
 	public ModelAndView titlemodify(@RequestParam("title_photo") MultipartFile file, @RequestParam("pre_title") String pre_title
 			,@RequestParam("cafe_id") String cafe_id) throws Exception {
@@ -256,6 +228,42 @@ public class mpcafeController {
 		return mv;
 	}
 	
+	//휴무일 삭제시
+	@RequestMapping(value = "/deleteOff", method = RequestMethod.GET)
+	public ModelAndView deleteOff(@RequestParam(value="off_id") String off_id, @RequestParam(value="cafe_id") String cafe_id) throws Exception {
+		b = service.deleteOff(off_id);
+		ModelAndView mv = new ModelAndView();
+		mpcafeVo vo = new mpcafeVo();
+		vo = service.dayoffSelect(cafe_id);
+		mv.addObject("vo", vo); //다시 vo값을 넣어서 리다이렉트
+		mv.setViewName("mypage_cafe/dayOff");
+		return mv;
+	}
+	
+	//휴무일 저장할때
+	@RequestMapping(value="dayOffSave", method= RequestMethod.POST)
+	public ModelAndView dayOffSave(String start_time, String end_time, dayoffVo dvo, HttpServletResponse resp) {
+		ModelAndView mv = new ModelAndView();
+		
+		if(dvo.getStart_time().equals("") && dvo.getEnd_time().equals("")) {			
+			dvo.setOff_type("휴무");		
+			b = service.insertOffday(dvo);
+		}else {
+			dvo.setOff_type("일시정지");		
+			b = service.insertOff(dvo);
+		}
+		String msg = "";
+		if(b) {
+			msg="영업일 관리가 성공적으로 완료되었습니다.";
+		}else {
+			msg="영업일 관리중 오류가 발생했습니다. 다시 시도해주세요";
+		}
+		mv.addObject("vo", vo);
+		mv.addObject("msg", msg);
+		mv.setViewName("mypage_cafe/dayoff_result");
+		return mv;
+
+	}
 		
 }
 
