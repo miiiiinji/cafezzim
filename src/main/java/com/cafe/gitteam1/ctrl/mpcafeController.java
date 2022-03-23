@@ -124,14 +124,11 @@ public class mpcafeController {
 		return mv;
 	}
 	
-	//메뉴 저장시
+	//메뉴 저장시	
 	@RequestMapping(value="menuSave", method=RequestMethod.POST)
-	public ModelAndView drinkSave(String cafe_id, mpcafe_listVo lvo, HttpServletResponse resp) {
+	public ModelAndView menuSave(String cafe_id, mpcafe_listVo lvo, HttpServletResponse resp) {
 		b = service.insertMenu(lvo);
 		ModelAndView mv = new ModelAndView();
-		vo = service.view(cafe_id);
-		mv.addObject("vo", vo);
-		mv.addObject("cafe_id", cafe_id);
 		mv.setViewName("mypage_cafe/cafeupdate");
 		return mv;
 

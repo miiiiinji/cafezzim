@@ -31,21 +31,14 @@ public class mpcafeService {
 	String cafe_id;
 	mpcafeVo vo;	
 	
+	//관리자 페이지 내 카페검색
 	public List<mpcafeVo> search(String findStr){
 		List<mpcafeVo> list = null;
 		list = mapper.search(findStr);		
 		return list;		
 	}
 	
-	public mpcafeVo dayoffSelect(String cafe_id){
-		mpcafeVo vo = null;
-		vo = mapper.view(cafe_id);
-		List<dayoffVo> offlist = null;
-		offlist = mapper.dayoffSelect(cafe_id);
-		vo.setOfflist(offlist);		
-		return vo;
-	}
-	
+	//카페관리 페이지 로딩
 	public mpcafeVo view(String cafe_id) { //cafe_id를 사용해서 호출
 		status = manager.getTransaction(new DefaultTransactionDefinition());
 		mpcafeVo vo = null;
@@ -69,6 +62,7 @@ public class mpcafeService {
 		}return vo;
 	}
 	
+	//기본 카페정보 수정
 	public boolean modify(mpcafeVo vo) {
 		status = manager.getTransaction(new DefaultTransactionDefinition());
 		boolean b = false;
@@ -85,6 +79,7 @@ public class mpcafeService {
 		return b;
 	}
 	
+	//검색어태그 수정
 	public boolean scnmodify(mpcafeVo vo) {
 		boolean c = false;
 		status = manager.getTransaction(new DefaultTransactionDefinition());
@@ -112,40 +107,8 @@ public class mpcafeService {
 		}return c;
 		
 	}
-	
-	
-	public boolean insertOff(dayoffVo dvo) {
-		boolean b = false;
-		status = manager.getTransaction(new DefaultTransactionDefinition());
-		
-			int c = mapper.insertOff(dvo);
-			if(c>0) {
-				manager.commit(status);
-				b = true;
-			}else {
-				manager.rollback(status);
-			}
 
-		return b;
-		
-	}
-	
-	public boolean insertOffday(dayoffVo dvo) {
-		boolean b = false;
-		status = manager.getTransaction(new DefaultTransactionDefinition());
-		
-			int c = mapper.insertOffday(dvo);
-			if(c>0) {
-				manager.commit(status);
-				b = true;
-			}else {
-				manager.rollback(status);
-			}
-
-		return b;
-		
-	}
-	
+	//메뉴 저장
 	public boolean insertMenu(mpcafe_listVo lvo) {
 		boolean b = false;
 		status = manager.getTransaction(new DefaultTransactionDefinition());
@@ -162,22 +125,7 @@ public class mpcafeService {
 		
 	}
 	
-	public boolean deleteOff(String off_id) {
-		boolean b = false;
-		status = manager.getTransaction(new DefaultTransactionDefinition());
-		
-		int c = mapper.deleteOff(off_id);
-		if(c>0) {
-			manager.commit(status);
-			b = true;
-		}else {
-			manager.rollback(status);
-		
-		}
-		return b;
-		
-	}
-	
+	//메뉴 삭제
 	public boolean deleteMenu(String menu_id) {
 		boolean b = false;
 		status = manager.getTransaction(new DefaultTransactionDefinition());
@@ -194,6 +142,7 @@ public class mpcafeService {
 		
 	}
 	
+	//카페사진 추가
 	public boolean insertAtt(mpcafeVo vo) {
 		boolean b = false;
 		status = manager.getTransaction(new DefaultTransactionDefinition());
@@ -216,6 +165,7 @@ public class mpcafeService {
 		
 	}
 
+	//카페사진 삭제
 	public boolean deleteOtherphoto(String photo_name) {
 		boolean b = false;
 		status = manager.getTransaction(new DefaultTransactionDefinition());
@@ -233,6 +183,7 @@ public class mpcafeService {
 		return b;
 		
 	}
+	
 	//타이틀사진삭제
 	public boolean deleteTitle(String pre_title) {
 		boolean b = false;
@@ -256,5 +207,67 @@ public class mpcafeService {
 		}
 		return b;			
 	}
+	
+//////////////////*영업일 관리 페이지*//////////////////////////////////
+	//영업일관리 페이지 휴무일 리스트
+	public mpcafeVo dayoffSelect(String cafe_id){
+		mpcafeVo vo = null;
+		vo = mapper.view(cafe_id);
+		List<dayoffVo> offlist = null;
+		offlist = mapper.dayoffSelect(cafe_id);
+		vo.setOfflist(offlist);		
+		return vo;
+	}
 
+	//영업일시정지 저장
+	public boolean insertOff(dayoffVo dvo) {
+		boolean b = false;
+		status = manager.getTransaction(new DefaultTransactionDefinition());
+		
+			int c = mapper.insertOff(dvo);
+			if(c>0) {
+				manager.commit(status);
+				b = true;
+			}else {
+				manager.rollback(status);
+			}
+
+		return b;
+		
+	}
+	
+	//휴무일 저장
+	public boolean insertOffday(dayoffVo dvo) {
+		boolean b = false;
+		status = manager.getTransaction(new DefaultTransactionDefinition());
+		
+			int c = mapper.insertOffday(dvo);
+			if(c>0) {
+				manager.commit(status);
+				b = true;
+			}else {
+				manager.rollback(status);
+			}
+
+		return b;
+		
+	}
+	
+	//휴무일 삭제
+	public boolean deleteOff(String off_id) {
+		boolean b = false;
+		status = manager.getTransaction(new DefaultTransactionDefinition());
+		
+		int c = mapper.deleteOff(off_id);
+		if(c>0) {
+			manager.commit(status);
+			b = true;
+		}else {
+			manager.rollback(status);
+		
+		}
+		return b;
+		
+	}	
+	
 }

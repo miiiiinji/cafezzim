@@ -183,54 +183,59 @@ String nowDate = simpleDateFormat.format(tempNowDate);
 		<div class="container">
 			<div id="menu" class="panel-item py-0">
 				<h3>음료 메뉴 수정</h3>
-				<c:if test="${not empty vo.menu}">
-					<c:forEach var='menu' items='${vo.menu }'>
-						<c:if test='${menu.menu_type == 2 }'>
-							<div class="mb-3">
-								<input type="text" class="menuname" value="${menu.menu_name}">
-								<input type="text" class="menuprice" value="${menu.menu_price}">
-								<input type="hidden" name="menu_id" value="${menu.menu_id }">
-								<a href="${path }/deleteMenu?menu_id=${menu.menu_id }&cafe_id=${vo.cafe_id}">
-								<button type="button" class="btn btn-link">삭제</button></a>
-							</div>
-						</c:if>
-					</c:forEach>
-				</c:if>
-				<button type="button" id="plus-drink" class="btn btn-outline-primary btn-sm" onclick="show_drinkadd()">음료메뉴 추가</button>				
-				<!-- 메뉴insert위한 폼 -->
-				<form id="frm_addDrink" name="frm_addDrink" method='post'> 
-					<div class="mb-3" id="drinkadd" style="display: none">
-						<input type="hidden" name="cafe_id" value="${vo.cafe_id}">
-						<input type="text" name="menu_name" class="menuid2" placeholder="새 메뉴 입력">
-						<input type="text" name="menu_price" class="menuid1" placeholder="가격 입력">
-						<input type="hidden" name="menu_type" value="2"><br/><br/>			
-						<button type="button" id="btnDrink" class="btn btn btn-primary">새 음료메뉴 입력</button>					
-					</div>
-				</form><br /> <br />
-					<h3>메인 메뉴 수정</h3>
+				<!--음료메뉴 수정후 새로고침 영역 --><div id="ajaxdrinkmenu">
 					<c:if test="${not empty vo.menu}">
 						<c:forEach var='menu' items='${vo.menu }'>
-							<c:if test='${menu.menu_type == 1 }'>
+							<c:if test='${menu.menu_type == 2 }'>
 								<div class="mb-3">
 									<input type="text" class="menuname" value="${menu.menu_name}">
 									<input type="text" class="menuprice" value="${menu.menu_price}">
+									<input type="hidden" name="menu_id" value="${menu.menu_id }">
 									<a href="${path }/deleteMenu?menu_id=${menu.menu_id }&cafe_id=${vo.cafe_id}">
 									<button type="button" class="btn btn-link">삭제</button></a>
 								</div>
 							</c:if>
 						</c:forEach>
-					</c:if>			
-					<button type="button" id="plus-food" class="btn btn-outline-primary btn-sm" onclick="show_foodadd()">메인메뉴 추가</button>								
-					<!-- 메뉴insert위한 폼 -->		
-					<form id="frm_addFood" name="frm_addFood" method='post'> 
-						<div class="mb-3" id="foodadd" style="display: none">
-							<input type="text" name="menu_name" class="menuid4" placeholder="새 메뉴입력"> 
-							<input type="text" name="menu_price" class="menuid1" placeholder="새 가격입력">
-							<input type="hidden" name="menu_type" value="1"><br/><br/>		
+					</c:if>
+					<button type="button" id="plus-drink" class="btn btn-outline-primary btn-sm" onclick="show_drinkadd()">음료메뉴 추가</button>				
+					
+					<!-- 메뉴insert위한 폼 -->
+					<form id="frm_addDrink" name="frm_addDrink" method='post'> 
+						<div class="mb-3" id="drinkadd" style="display: none">
 							<input type="hidden" name="cafe_id" value="${vo.cafe_id}">
-							<button type="button" id="btnFood" class="btn btn-outline-primary btn-sm">새 메인메뉴 입력</button>						
+							<input type="text" name="menu_name" class="menuid2" placeholder="새 메뉴 입력">
+							<input type="text" name="menu_price" class="menuid1" placeholder="가격 입력">
+							<input type="hidden" name="menu_type" value="2"><br/><br/>			
+							<button type="button" id="btnDrink" class="btn btn btn-primary">새 음료메뉴 입력</button>					
 						</div>
-					</form>
+					</form><br /> <br />
+				<!--음료메뉴 수정후 새로고침 영역 끝--></div>
+					<h3>메인 메뉴 수정</h3>
+					<!--메인메뉴 수정후 새로고침 영역 --><div id="ajaxfoodmenu">
+						<c:if test="${not empty vo.menu}">
+							<c:forEach var='menu' items='${vo.menu }'>
+								<c:if test='${menu.menu_type == 1 }'>
+									<div class="mb-3">
+										<input type="text" class="menuname" value="${menu.menu_name}">
+										<input type="text" class="menuprice" value="${menu.menu_price}">
+										<a href="${path }/deleteMenu?menu_id=${menu.menu_id }&cafe_id=${vo.cafe_id}">
+										<button type="button" class="btn btn-link">삭제</button></a>
+									</div>
+								</c:if>
+							</c:forEach>
+						</c:if>			
+						<button type="button" id="plus-food" class="btn btn-outline-primary btn-sm" onclick="show_foodadd()">메인메뉴 추가</button>								
+						<!-- 메뉴insert위한 폼 -->		
+						<form id="frm_addFood" name="frm_addFood" method='post'> 
+							<div class="mb-3" id="foodadd" style="display: none">
+								<input type="text" name="menu_name" class="menuid4" placeholder="새 메뉴입력"> 
+								<input type="text" name="menu_price" class="menuid1" placeholder="새 가격입력">
+								<input type="hidden" name="menu_type" value="1"><br/><br/>		
+								<input type="hidden" name="cafe_id" value="${vo.cafe_id}">
+								<button type="button" id="btnFood" class="btn btn-outline-primary btn-sm">새 메인메뉴 입력</button>						
+							</div>
+						</form>
+					<!--메인메뉴 수정후 새로고침 영역 끝--></div>
 			</div><br />
 			<!---------------------------------- 카페정보수정 버튼 --------------------------------------------->
 			<div class="row">

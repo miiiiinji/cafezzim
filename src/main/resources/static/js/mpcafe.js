@@ -78,17 +78,33 @@ $(function() {
 		alert("요청하신 휴무일 및 일시정지가 적용되었습니다.");	
 	})
 
-	$('#btnDrink').click(function(){
-		$frm = $('#frm_addDrink')[0];
-		$frm.action = "menuSave"
-		$frm.submit();
-	})
+	$(document).ready(function(){
+		$('#btnDrink').on('click', function(){
+	        $.ajax({
+	            url: "menuSave",
+	            type: "POST",
+	            data: $('#frm_addDrink').serialize(),
+	            success: function(data){
+	                $("#ajaxdrinkmenu").load(location.href+' #ajaxdrinkmenu'); 
+	            },
+	            error: function(){  alert("error");  }
+	        });
+	    });
+	});	
 	
-	$('#btnFood').click(function(){
-		$frm = $('#frm_addFood')[0];
-		$frm.action = "menuSave"
-		$frm.submit();
-	})
+	$(document).ready(function(){
+		$('#btnFood').on('click', function(){
+	        $.ajax({
+	            url: "menuSave",
+	            type: "POST",
+	            data: $('#frm_addFood').serialize(),
+	            success: function(data){
+	                $("#ajaxfoodmenu").load(location.href+' #ajaxfoodmenu'); 
+	            },
+	            error: function(){  alert("error");  }
+	        });
+	    });
+	});
 	
 	$('#btnOtherphoto').click(function() {
 		$frm = $('#frm_upload')[0];
