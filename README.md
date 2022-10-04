@@ -1,7 +1,7 @@
 # CafeZzim 
 ![CafeZzim_logo](https://user-images.githubusercontent.com/96097783/154017731-26dd44ed-704d-4c92-a6a5-d17e382400f2.png)
 
-Cafe Seat Reservation Site<br/>
+Cafe Seat Reservation Website<br/>
 
 ## Project Introduction
 
@@ -10,7 +10,7 @@ We made this website so the users can freely "zzim"(meaning reserving in Korean)
 
 ### Goal of the project
 Cafes in today's era have gone beyond just the meaning of a place to drink a coffee. 
-The reasons for visiting the cafe are various: studying, working, enjoying spare time, and business meetings. 
+The reasons for visiting the cafe are various: studying, working, enjoying spare time, and business meetings, etc. 
 By creating this website customers can freely choose the seat at cafe, at the time they want, and they can also order the menu.
 
 ## Technology Used
